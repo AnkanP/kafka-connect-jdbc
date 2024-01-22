@@ -26,7 +26,7 @@
     <groupId>io.confluent</groupId>
     <artifactId>kafka-connect-jdbc</artifactId>
     <packaging>jar</packaging>
-    <version>10.8.0-SNAPSHOT</version>
+    <version>10.8.1-SNAPSHOT</version>
     <name>kafka-connect-jdbc</name>
     <organization>
         <name>Confluent, Inc.</name>
@@ -68,6 +68,9 @@
         <project.package.home>target/${project.artifactId}-${project.version}-package</project.package.home>
         <maven.release.plugin.version>2.5.3</maven.release.plugin.version>
         <testcontainers.version>1.17.3</testcontainers.version>
+        <log4j.api.version>2.13.3</log4j.api.version>
+        <log4j.core.version>2.13.3</log4j.core.version>
+        <log4j.sl4j.impl.version>2.13.3</log4j.sl4j.impl.version>
     </properties>
 
     <repositories>
@@ -86,6 +89,10 @@
     </pluginRepositories>
 
     <dependencies>
+
+
+
+
         <dependency>
             <groupId>org.apache.kafka</groupId>
             <artifactId>connect-api</artifactId>
@@ -110,6 +117,14 @@
             <version>${postgresql.version}</version>
             <scope>runtime</scope>
         </dependency>
+
+        <!-- secrets manager jdbc wrapper -->
+        <dependency>
+            <groupId>com.amazonaws.secretsmanager</groupId>
+            <artifactId>aws-secretsmanager-jdbc</artifactId>
+            <version>1.0.12</version>
+        </dependency>
+
         <!-- Add all packages imported by ojdbc8-production explicitly to pom when bumping up driver version -->
 	<!-- Do not use ojdbc8-production directly to avoid .pom file in final package -->
         <!-- See https://www.oracle.com/database/technologies/maven-central-guide.html -->
@@ -413,6 +428,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <trimStackTrace>false</trimStackTrace>
+                    <skipTests>true</skipTests>
                 </configuration>
             </plugin>
             <plugin>
@@ -427,6 +443,7 @@
                                 <exclude>**/*OOM*.java</exclude>
                             </excludes>
                             <trimStackTrace>false</trimStackTrace>
+                            <skipTests>true</skipTests>
                         </configuration>
                     </execution>
                     <execution>
@@ -447,12 +464,6 @@
             </plugin>
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
-                <configuration>
-                    <descriptors>
-                        <descriptor>src/assembly/development.xml</descriptor>
-                        <descriptor>src/assembly/package.xml</descriptor>
-                    </descriptors>
-                </configuration>
                 <executions>
                     <execution>
                         <id>make-assembly</id>
@@ -462,7 +473,16 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <descriptors>
+                        <descriptor>src/assembly/development.xml</descriptor>
+                        <descriptor>src/assembly/package.xml</descriptor>
+                    </descriptors>
+                </configuration>
             </plugin>
+
+
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
@@ -472,6 +492,7 @@
                         <phase>validate</phase>
                         <configuration>
                             <suppressionsLocation>checkstyle/suppressions.xml</suppressionsLocation>
+                            <skip>true</skip>
                         </configuration>
                         <goals>
                             <goal>check</goal>

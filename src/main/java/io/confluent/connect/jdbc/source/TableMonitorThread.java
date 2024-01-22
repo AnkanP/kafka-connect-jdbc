@@ -182,6 +182,12 @@ public class TableMonitorThread extends Thread {
       );
       connectionProvider.close();
       return false;
+    } catch (ClassNotFoundException e) {
+      throw new RuntimeException(e);
+    } catch (InstantiationException e) {
+      throw new RuntimeException(e);
+    } catch (IllegalAccessException e) {
+      throw new RuntimeException(e);
     }
 
     final List<TableId> filteredTables = new ArrayList<>(allTables.size());

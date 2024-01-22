@@ -98,6 +98,12 @@ public class CachedConnectionProvider implements ConnectionProvider {
         } else {
           throw sqle;
         }
+      } catch (ClassNotFoundException e) {
+        throw new RuntimeException(e);
+      } catch (InstantiationException e) {
+        throw new RuntimeException(e);
+      } catch (IllegalAccessException e) {
+        throw new RuntimeException(e);
       }
     }
   }

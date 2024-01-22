@@ -231,7 +231,7 @@ public class GenericDatabaseDialect implements DatabaseDialect {
   }
 
   @Override
-  public Connection getConnection() throws SQLException {
+  public Connection getConnection() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
     // These config names are the same for both source and sink configs ...
     String username = config.getString(JdbcSourceConnectorConfig.CONNECTION_USER_CONFIG);
     Password dbPassword = config.getPassword(JdbcSourceConnectorConfig.CONNECTION_PASSWORD_CONFIG);
@@ -247,6 +247,8 @@ public class GenericDatabaseDialect implements DatabaseDialect {
     // handshake, while still giving enough time to validate once in the follower worker,
     // and again in the leader worker and still be under 90s REST serving timeout
     DriverManager.setLoginTimeout(40);
+    // Load the JDBC driver
+    //Class.forName( "com.simba.athena.jdbc.Driver" ).newInstance();
     Connection connection = DriverManager.getConnection(jdbcUrl, properties);
     if (jdbcDriverInfo == null) {
       jdbcDriverInfo = createJdbcDriverInfo(connection);
@@ -312,6 +314,12 @@ public class GenericDatabaseDialect implements DatabaseDialect {
         jdbcDriverInfo = createJdbcDriverInfo(connection);
       } catch (SQLException e) {
         throw new ConnectException("Unable to get JDBC driver information", e);
+      } catch (ClassNotFoundException e) {
+        throw new RuntimeException(e);
+      } catch (InstantiationException e) {
+        throw new RuntimeException(e);
+      } catch (IllegalAccessException e) {
+        throw new RuntimeException(e);
       }
     }
     return jdbcDriverInfo;
@@ -526,6 +534,12 @@ public class GenericDatabaseDialect implements DatabaseDialect {
         } else {
           throw new ConnectException("Unable to get identifier metadata", e);
         }
+      } catch (ClassNotFoundException e) {
+        throw new RuntimeException(e);
+      } catch (InstantiationException e) {
+        throw new RuntimeException(e);
+      } catch (IllegalAccessException e) {
+        throw new RuntimeException(e);
       }
     }
     return identifierRules.get();

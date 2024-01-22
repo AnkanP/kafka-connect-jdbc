@@ -34,6 +34,7 @@ public abstract class BaseOOMIntegrationTest {
 
   public void startTask() {
     task = new JdbcSourceTask();
+    System.out.println("XXXXXXXPROPERTIES: " + props.toString());
     task.start(props);
   }
 
@@ -48,6 +49,7 @@ public abstract class BaseOOMIntegrationTest {
   public void testStreamingReads() throws InterruptedException {
     props.put(JdbcSourceTaskConfig.TABLES_CONFIG, "");
     props.put(JdbcSourceConnectorConfig.QUERY_CONFIG, buildLargeQuery());
+    props.put("last.modified.ts.field","tc");
     startTask();
     assertTrue(task.poll().size() > 0);
   }

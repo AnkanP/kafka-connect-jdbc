@@ -43,7 +43,7 @@ public class CachedConnectionProviderTest {
   private ConnectionProvider provider;
 
   @Test
-  public void retryTillFailure() throws SQLException {
+  public void retryTillFailure() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
     int retries = 15;
     ConnectionProvider connectionProvider = new CachedConnectionProvider(provider, retries, 100L);
     EasyMock.expect(provider.getConnection()).andThrow(new SQLException("test")).times(retries);
@@ -60,7 +60,7 @@ public class CachedConnectionProviderTest {
 
 
   @Test
-  public void retryTillConnect() throws SQLException {
+  public void retryTillConnect() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
     Connection connection = EasyMock.createMock(Connection.class);
     int retries = 15;
 

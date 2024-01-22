@@ -85,6 +85,7 @@ public class PostgresDatatypeIT extends BaseConnectorIT {
     props.put("pk.mode", "none");
     props.put("topics", tableName);
 
+
     // create topic in Kafka
     connect.kafka().createTopic(tableName, 1);
   }

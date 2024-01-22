@@ -41,6 +41,8 @@ public class PostgresOOMIT extends BaseOOMIntegrationTest {
     props.put(JdbcSourceConnectorConfig.CONNECTION_USER_CONFIG, "postgres");
     props.put(JdbcSourceConnectorConfig.MODE_CONFIG, JdbcSourceConnectorConfig.MODE_BULK);
     props.put(JdbcSourceTaskConfig.TOPIC_PREFIX_CONFIG, "topic_");
+    props.put("last.modified.ts.field","tc");
+
   }
 
   protected String buildLargeQuery() {
@@ -61,6 +63,7 @@ public class PostgresOOMIT extends BaseOOMIntegrationTest {
   public void testTableLocksWithStreamingReads() throws InterruptedException, SQLException {
     createTestTable();
     props.put(JdbcSourceTaskConfig.TABLES_CONFIG, "test_table");
+    props.put("last.modified.ts.field","tc");
     startTask();
     assertNoLocksOpen(task);
     assertTrue(task.poll().size() > 0);

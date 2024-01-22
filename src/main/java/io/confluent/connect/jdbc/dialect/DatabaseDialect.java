@@ -554,7 +554,8 @@ public interface DatabaseDialect extends ConnectionProvider {
    * @return the statement binder; may not be null
    * @see #bindField(PreparedStatement, int, Schema, Object)
    */
-  default StatementBinder statementBinder(
+  default StatementBinder
+  statementBinder(
       PreparedStatement statement,
       JdbcSinkConfig.PrimaryKeyMode pkMode,
       SchemaPair schemaPair,

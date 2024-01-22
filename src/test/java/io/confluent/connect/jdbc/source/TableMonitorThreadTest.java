@@ -379,7 +379,7 @@ public class TableMonitorThreadTest {
     assertEquals(Arrays.asList(expectedTables), tableMonitorThread.tables());
   }
 
-  protected void expectTableNames(final List<TableId> expectedTableIds, final Op...operations) throws SQLException {
+  protected void expectTableNames(final List<TableId> expectedTableIds, final Op...operations) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
     EasyMock.expect(connectionProvider.getConnection()).andReturn(connection);
     EasyMock.expect(dialect.tableIds(EasyMock.eq(connection))).andAnswer(
         new IAnswer<List<TableId>>() {

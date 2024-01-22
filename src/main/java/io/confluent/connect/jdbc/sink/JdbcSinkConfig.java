@@ -45,6 +45,11 @@ import org.apache.kafka.common.config.types.Password;
 
 public class JdbcSinkConfig extends AbstractConfig {
 
+  public static final String LAST_MODIFIED_TS_FIELD = "last.modified.ts.field";
+  private static final String LAST_MODIFIED_TS_FIELD_DOC = "timestamp field in the table for time travel check.";
+
+  private static final String LAST_MODIFIED_TS_FIELD_DEFAULT = "tc";
+
   public enum InsertMode {
     INSERT,
     UPSERT,
@@ -66,6 +71,7 @@ public class JdbcSinkConfig extends AbstractConfig {
           "__connect_offset"
       )
   );
+
 
   public static final String CONNECTION_URL = JdbcSourceConnectorConfig.CONNECTION_URL_CONFIG;
   private static final String CONNECTION_URL_DOC =
@@ -272,7 +278,10 @@ public class JdbcSinkConfig extends AbstractConfig {
       "SQL Server - Use HOLDLOCK in MERGE";
 
   public static final ConfigDef CONFIG_DEF = new ConfigDef()
-        // Connection
+
+
+
+          // Connection
         .define(
             CONNECTION_URL,
             ConfigDef.Type.STRING,
@@ -446,6 +455,21 @@ public class JdbcSinkConfig extends AbstractConfig {
           ConfigDef.Width.MEDIUM,
           DB_TIMEZONE_CONFIG_DISPLAY
         )
+
+          //time travel
+          .define(
+                  LAST_MODIFIED_TS_FIELD,
+                  ConfigDef.Type.STRING,
+                  LAST_MODIFIED_TS_FIELD_DEFAULT,
+                  ConfigDef.Importance.LOW,
+                  LAST_MODIFIED_TS_FIELD_DOC,
+                  "timetravel",
+                  1,
+                  ConfigDef.Width.MEDIUM,
+                  LAST_MODIFIED_TS_FIELD
+          )
+
+
         // DDL
         .define(
             AUTO_CREATE,
@@ -546,8 +570,12 @@ public class JdbcSinkConfig extends AbstractConfig {
 
   public final boolean trimSensitiveLogsEnabled;
 
+  //timetravel
+  public final String timestampFieldName;
+
   public JdbcSinkConfig(Map<?, ?> props) {
     super(CONFIG_DEF, props);
+    timestampFieldName = getString(LAST_MODIFIED_TS_FIELD);
     connectorName = ConfigUtils.connectorName(props);
     connectionUrl = getString(CONNECTION_URL);
     connectionUser = getString(CONNECTION_USER);

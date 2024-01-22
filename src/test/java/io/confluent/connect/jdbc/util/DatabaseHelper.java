@@ -37,7 +37,7 @@ public final class DatabaseHelper {
     this.dialect = dialect;
   }
 
-  public void setUp() throws SQLException, IOException {
+  public void setUp() throws SQLException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
     connection = dialect.getConnection();
   }
 

@@ -546,7 +546,20 @@ public class JdbcSourceConnectorConfig extends AbstractConfig {
         ++orderInGroup,
         Width.LONG,
         DIALECT_NAME_DISPLAY,
-        DatabaseDialectRecommender.INSTANCE);
+        DatabaseDialectRecommender.INSTANCE)
+            .define(
+                    "last.modified.ts.field",
+                    ConfigDef.Type.STRING,
+                    "LAST_MODIFIED_TS_FIELD_DEFAULT",
+                    ConfigDef.Importance.LOW,
+                    "LAST_MODIFIED_TS_FIELD_DOC",
+                    DATABASE_GROUP,
+                    ++orderInGroup,
+                    ConfigDef.Width.MEDIUM,
+                    "LAST_MODIFIED_TS_FIELD"
+            )
+
+    ;
   }
 
   private static final void addModeOptions(ConfigDef config) {

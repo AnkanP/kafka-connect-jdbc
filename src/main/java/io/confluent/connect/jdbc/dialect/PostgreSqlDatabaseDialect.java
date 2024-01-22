@@ -99,7 +99,7 @@ public class PostgreSqlDatabaseDialect extends GenericDatabaseDialect {
   }
 
   @Override
-  public Connection getConnection() throws SQLException {
+  public Connection getConnection() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
     Connection result = super.getConnection();
     synchronized (this) {
       if (maxIdentifierLength <= 0) {

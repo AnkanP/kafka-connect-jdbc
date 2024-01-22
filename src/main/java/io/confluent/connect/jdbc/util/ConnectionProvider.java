@@ -28,7 +28,7 @@ public interface ConnectionProvider extends AutoCloseable {
    * @return the connection; never null
    * @throws SQLException if there is a problem getting the connection
    */
-  Connection getConnection() throws SQLException;
+  Connection getConnection() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException;
 
   /**
    * Determine if the specified connection is valid.
