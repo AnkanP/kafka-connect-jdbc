@@ -1,0 +1,84 @@
+
+drop table "jdbctest"
+
+select * from test
+
+insert into test values(1,"ankna","anknap@gmail.com")
+
+INSERT INTO test (cust_id, name, email, address, date_field, timestamp_field, time_field) VALUES (0, '', '', '', current_date, 0, 0);
+
+
+
+drop table jobcontrol
+
+CREATE TABLE jobcontrol (ExecutionId INTEGER NOT NULL, JobName TEXT NOT NULL,  LastExecutionDate DATE NOT NULL,JobStatus TEXT NOT NULL, PRIMARY KEY (ExecutionId))
+
+INSERT INTO jobcontrol (executionid, jobname, lastexecutiondate, jobstatus) VALUES (1, 'JOB1', '2023-10-01','SUCCEEDED');
+INSERT INTO jobcontrol (executionid, jobname, lastexecutiondate, jobstatus) VALUES (2, 'JOB1', '2023-10-02','SUCCEEDED');
+INSERT INTO jobcontrol (executionid, jobname, lastexecutiondate, jobstatus) VALUES (3, 'JOB1', '2023-10-03','SUCCEEDED');
+INSERT INTO jobcontrol (executionid, jobname, lastexecutiondate, jobstatus) VALUES (4, 'JOB1', '2023-10-04','SUCCEEDED');
+
+
+select jobstatus,lastexecutiondate from jobcontrol where jobname = 'JOB1' order by lastexecutiondate desc limit 1
+
+SELECT * FROM (select * from jobcontrol where executionid=1) a
+
+
+CREATE TABLE Persons_source (
+    PersonID serial not null,
+    LastName varchar(255),
+    FirstName varchar(255),
+    Address varchar(255),
+    City varchar(255),
+    TC timestamp default current_timestamp not null,
+    PRIMARY KEY (PersonID)
+);
+
+--/
+CREATE OR REPLACE FUNCTION trigger_set_timestamp_target()
+RETURNS TRIGGER AS $$
+BEGIN
+  RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+/
+
+--/
+CREATE OR REPLACE TRIGGER set_timestamp_target
+BEFORE UPDATE ON Persons_target
+FOR EACH ROW
+WHEN (NEW.TC < OLD.TC)
+EXECUTE PROCEDURE trigger_set_timestamp_target();
+/
+
+select * from Persons_source
+
+select current_timestamp - interval '1' hour
+
+update Persons_source
+set city= 'Paris', tc = (current_timestamp + interval '5' hour)
+where personid=4
+
+
+update Persons_source
+set city= 'nepal', tc = current_timestamp 
+where personid=2
+
+
+-- postgres upsert query
+INSERT INTO "persons_target" ("personid","lastname","firstname","address","city","tc") 
+VALUES (2,'P','Ankan','123 Main St.','russ','2024-01-20 16:43:41.028+00') 
+ON CONFLICT ("personid") 
+DO UPDATE SET "lastname"=EXCLUDED."lastname",
+"firstname"=EXCLUDED."firstname",
+"address"=EXCLUDED."address",
+"city"=EXCLUDED."city",
+"tc"=EXCLUDED."tc"
+
+WHERE "persons_target"."tc"<= EXCLUDED."tc"
+
+
+
+
+ INSERT INTO Persons_source(LastName, FirstName, Address, City) 
+VALUES ('P', 'xyz', '123 Main St.', 'uganda')
