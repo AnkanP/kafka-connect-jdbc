@@ -1,0 +1,13 @@
+org.co.ds.kafka.connect.jdbc.dialect.GenericDatabaseDialect$Provider
+org.co.ds.kafka.connect.jdbc.dialect.Db2DatabaseDialect$Provider
+org.co.ds.kafka.connect.jdbc.dialect.DerbyDatabaseDialect$Provider
+org.co.ds.kafka.connect.jdbc.dialect.OracleDatabaseDialect$Provider
+org.co.ds.kafka.connect.jdbc.dialect.SqliteDatabaseDialect$Provider
+org.co.ds.kafka.connect.jdbc.dialect.PostgreSqlDatabaseDialect$Provider
+org.co.ds.kafka.connect.jdbc.dialect.MySqlDatabaseDialect$Provider
+org.co.ds.kafka.connect.jdbc.dialect.SqlServerDatabaseDialect$Provider
+org.co.ds.kafka.connect.jdbc.dialect.SapHanaDatabaseDialect$Provider
+org.co.ds.kafka.connect.jdbc.dialect.SybaseDatabaseDialect$Provider
+org.co.ds.kafka.connect.jdbc.dialect.VerticaDatabaseDialect$Provider
+org.co.ds.kafka.connect.jdbc.dialect.CustomPostgresSqlDatabaseDialect$Provider
+org.co.ds.kafka.connect.jdbc.dialect.CustomOracleDatabaseDialect$Provider

@@ -31,6 +31,6 @@ For more information, check the documentation for the JDBC connector on the [con
 
 # License
 
-This project is licensed under the [Confluent Community License](LICENSE).
+This project is licensed under the Confluent Community License
 
 # kafka-connect-jdbc
